@@ -26,13 +26,15 @@ def decodeSevenBits(seven_bits):
     seven_bits = seven_bits.reshape(1, -1)
     return np.dot(seven_bits, D) % 2
 
+def correctionMethod(bit_error_position):
+        for i in D:
+            comparison = D == bit_error_position
+            equal_arrays = comparison.all()
+            if equal_arrays:
+                print(i);
+                return i
+
 encoded_bits = []
-
-#Encoding the bits and setting encoded_bits to a 7,2500 matrix of bits
-for i in range(0, len(bit_matrix), 4):
-    four_bits = bit_matrix[i:i + 4]
-    encoded_bits.extend(encodeFourBits(four_bits))
-
 
 def errorCalculation(p, matrix):
     errorCount = 0;
@@ -48,8 +50,13 @@ def errorCalculation(p, matrix):
     return matrix
 
 
+#Encoding the bits and setting encoded_bits to a 7,2500 matrix of bits
+for i in range(0, len(bit_matrix), 4):
+    four_bits = bit_matrix[i:i + 4]
+    encoded_bits.extend(encodeFourBits(four_bits))
 
-p = [0.01]
+
+p = [0.2]
 
 for i in p:
     tempMatrix = np.copy(encoded_bits)
@@ -57,11 +64,10 @@ for i in p:
 
     decoded_bits = [] 
     for seven_bits in errorMatrix:
-        decoded_bits.extend(decodeSevenBits(seven_bits))
+        decodePostion = decodeSevenBits(seven_bits)
+        bit_corrected = correctionMethod(decodePostion)
+        print(bit_corrected)
 
-    decoded_bits = np.vstack(decoded_bits) 
-
-    print(decoded_bits)
 
 
 

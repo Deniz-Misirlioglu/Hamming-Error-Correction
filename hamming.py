@@ -5,10 +5,10 @@ np.set_printoptions(threshold=sys.maxsize)
 
 bit_matrix = np.random.randint(0, 2, 10000)
 
-G = np.array([[1, 0, 0, 0, 1, 1, 0],
-              [0, 1, 0, 0, 1, 0, 1],
-              [0, 0, 1, 0, 0, 1, 1],
-              [0, 0, 0, 1, 1, 1, 1]])
+G = np.array([[1, 0, 0, 0, 1, 1, 1],
+              [0, 1, 0, 0, 1, 1, 0],
+              [0, 0, 1, 0, 1, 0, 1],
+              [0, 0, 0, 1, 0, 1, 1]])
 
 D = np.array([[1,1,1],
               [1,1,0],
@@ -24,6 +24,7 @@ def encodeFourBits(four_bits):
 
 def decodeSevenBits(seven_bits):
     seven_bits = seven_bits.reshape(1, -1)
+    print("THIS IS DECODED " ,np.dot(seven_bits, D) % 2)
     return np.dot(seven_bits, D) % 2
 
 encoded_bits = []
@@ -42,5 +43,3 @@ for seven_bits in encoded_bits:
 encoded_bits = np.vstack(encoded_bits)
 decoded_bits = np.vstack(decoded_bits)
 
-print("Encoded bits:")
-print(decoded_bits)

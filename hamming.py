@@ -27,7 +27,6 @@ def decodeSevenBits(seven_bits):
     return np.dot(seven_bits, D) % 2
 
 encoded_bits = []
-decoded_bits = []
 
 #Encoding the bits and setting encoded_bits to a 7,2500 matrix of bits
 for i in range(0, len(bit_matrix), 4):
@@ -46,22 +45,29 @@ def errorCalculation(p, matrix):
                     seven_bits[i] = 0
                 else:
                     seven_bits[i] = 1
-    return errorCount
+    return matrix
 
-p = [0.01,0.05,0.1,0.2]
+
+
+p = [0.01]
 
 for i in p:
-    tempMatrix = encoded_bits;
-    errorMatrix = errorCalculation(i,tempMatrix)
-    print(errorMatrix)
+    tempMatrix = np.copy(encoded_bits)
+    errorMatrix = errorCalculation(i, tempMatrix)
+
+    decoded_bits = [] 
+    for seven_bits in errorMatrix:
+        decoded_bits.extend(decodeSevenBits(seven_bits))
+
+    decoded_bits = np.vstack(decoded_bits) 
+
+    print(decoded_bits)
 
 
-for seven_bits in encoded_bits:
-    decoded_bits.extend(decodeSevenBits(seven_bits))
+
 
 
 
 
 encoded_bits = np.vstack(encoded_bits)
-decoded_bits = np.vstack(decoded_bits)
 

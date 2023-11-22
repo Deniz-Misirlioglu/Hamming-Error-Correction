@@ -70,7 +70,7 @@ for i in p:
     tempMatrix = np.copy(encoded_bits)
     errorMatrix = errorCalculation(i, tempMatrix)
     
-    print(compareMatrix(tempMatrix, original_encoded_bits))
+    print("error for", i, round(compareMatrix(tempMatrix, original_encoded_bits) / 17500,5))
 
 
     decoded_bits = [] 
@@ -85,5 +85,5 @@ for i in p:
                 seven_bits[bit_corrected] = 0;
 
 
-    print(compareMatrix(errorMatrix, original_encoded_bits))
+    print("error for corrected bits at", i, round(compareMatrix(errorMatrix, original_encoded_bits) / 17500,5))
 

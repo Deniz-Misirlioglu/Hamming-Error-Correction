@@ -65,7 +65,7 @@ original_encoded_bits = [];
 for i in range(0, len(bit_matrix), 4):
     four_bits = bit_matrix[i:i + 4]
     encoded_bits.extend(encodeFourBits(four_bits))
-    original_encoded_bits = encoded_bits.copy()
+    original_encoded_bits = np.copy(encoded_bits)
 
 p = [0.01, 0.05, 0.1, 0.2, .3, .5]
 error_rates_before_correction = []

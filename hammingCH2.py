@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 np.set_printoptions(threshold=sys.maxsize)
 
 bit_matrix = np.random.randint(0, 2, 10000)
+
+
 allChannelStates = []
 inStateGood = bool(True);
 
@@ -55,7 +57,6 @@ def errorCalculation(p, matrix):
 
 def compareMatrix(A,B):
     error_count = np.sum(A != B) 
-    
     return error_count
 
 encoded_bits = []
@@ -66,9 +67,14 @@ errorProbability = 0;
 for i in range(0, len(bit_matrix), 4):
     four_bits = bit_matrix[i:i + 4]
     encoded_bits.extend(encodeFourBits(four_bits))
-    original_encoded_bits = encoded_bits.copy()
 
+
+original_encoded_bits = np.copy(encoded_bits)
 numOfError = 0;
+
+
+np.savetxt('original_encoded_bits.csv', original_encoded_bits, delimiter=',', fmt='%d')
+
 for encodedBits in encoded_bits:
     for i in range(len(encodedBits)):
 
@@ -129,30 +135,26 @@ for encodedBits in encoded_bits:
                             else:
                                 encodedBits[i] = 1
     
+numofErrorCorrected = 0;
+
 
 #######Decoding
-tempMatrix = np.copy(encoded_bits)
-for sevenBits in tempMatrix:
+
+for sevenBits in encoded_bits:
     decodePostion = decodeSevenBits(sevenBits)
     bit_corrected = correctionMethod(decodePostion)
-    
     if bit_corrected >= 0:
-                print("decoded position", decodePostion)
-                print("before Correction", sevenBits)
+                numofErrorCorrected = numofErrorCorrected + 1;
                 if sevenBits[bit_corrected] == 0:
                     sevenBits[bit_corrected] = 1
                 else:
                     sevenBits[bit_corrected] = 0
-                print("after Correction", sevenBits)
 
 
+np.savetxt('tempMatrix.csv', encoded_bits, delimiter=',', fmt='%d')
 
-error_after_correction = compareMatrix(original_encoded_bits, tempMatrix)
-
-np.savetxt('original_encoded_bits.csv', original_encoded_bits, delimiter=',', fmt='%d')
-print("**********************")
-np.savetxt('tempMatrix.csv', tempMatrix, delimiter=',', fmt='%d')
-
+error_after_correction = compareMatrix(original_encoded_bits, encoded_bits)
+print(error_after_correction)
 numeric_states = [0 if state == 'good' else 1 for state in allChannelStates]
 
 interval = 500
@@ -179,3 +181,5 @@ plt.ylabel('Errors')
 plt.title('Comparison of Error After Correction and Number of Errors')
 plt.ylim(0, max(error_after_correction, numOfError) * 1.2)
 plt.show()
+
+print(numofErrorCorrected)

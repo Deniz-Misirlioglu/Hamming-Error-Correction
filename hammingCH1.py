@@ -34,8 +34,6 @@ def correctionMethod(bit_error_position):
             return index
     return -1 
 
-encoded_bits = []
-original_encoded_bits = [];
 
 def errorCalculation(p, matrix):
     errorCount = 0;
@@ -56,6 +54,10 @@ def compareMatrix(A,B):
     
     return error_count
 
+##############################################################################
+
+encoded_bits = []
+original_encoded_bits = [];
 
 
 #Encoding the bits and setting encoded_bits to a 7,2500 matrix of bits

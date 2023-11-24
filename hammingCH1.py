@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
 
 np.set_printoptions(threshold=sys.maxsize)
 
@@ -67,13 +68,16 @@ for i in range(0, len(bit_matrix), 4):
     original_encoded_bits = encoded_bits.copy()
 
 p = [0.01, 0.05, 0.1, 0.2]
+error_rates_before_correction = []
+error_rates_after_correction = []
 
 for i in p:
     tempMatrix = np.copy(encoded_bits)
     errorMatrix = errorCalculation(i, tempMatrix)
     
-    print("error for", i, round(compareMatrix(tempMatrix, original_encoded_bits) / 17500,5))
-
+    error_before_correction = compareMatrix(tempMatrix, original_encoded_bits) / 17500
+    error_rates_before_correction.append(error_before_correction)
+    print("Error before correction for p =", i, ":", round(error_before_correction, 5))
 
     decoded_bits = [] 
     for seven_bits in errorMatrix:
@@ -82,10 +86,21 @@ for i in p:
         
         if bit_corrected >= 0:
             if seven_bits[bit_corrected] == 0:
-                seven_bits[bit_corrected] = 1;
+                seven_bits[bit_corrected] = 1
             else:
-                seven_bits[bit_corrected] = 0;
+                seven_bits[bit_corrected] = 0
 
+    error_after_correction = compareMatrix(errorMatrix, original_encoded_bits) / 17500
+    error_rates_after_correction.append(error_after_correction)
+    print("Error after correction for p =", i, ":", round(error_after_correction, 5))
 
-    print("error for corrected bits at", i, round(compareMatrix(errorMatrix, original_encoded_bits) / 17500,5))
-
+# Plotting the data
+plt.figure(figsize=(8, 6))
+plt.plot(p, error_rates_before_correction, marker='o', label='Error Before Correction')
+plt.plot(p, error_rates_after_correction, marker='x', label='Error After Correction')
+plt.xlabel('Error Probability (p)')
+plt.ylabel('Error Rate')
+plt.title('Error Rates Before and After Correction')
+plt.legend()
+plt.grid(True)
+plt.show()

@@ -135,17 +135,23 @@ tempMatrix = np.copy(encoded_bits)
 for sevenBits in tempMatrix:
     decodePostion = decodeSevenBits(sevenBits)
     bit_corrected = correctionMethod(decodePostion)
-
+    
     if bit_corrected >= 0:
+                print("decoded position", decodePostion)
+                print("before Correction", sevenBits)
                 if sevenBits[bit_corrected] == 0:
                     sevenBits[bit_corrected] = 1
                 else:
                     sevenBits[bit_corrected] = 0
+                print("after Correction", sevenBits)
 
 
-error_after_correction = compareMatrix(encoded_bits, tempMatrix)
 
-print("The error count is",error_after_correction);
+error_after_correction = compareMatrix(original_encoded_bits, tempMatrix)
+
+np.savetxt('original_encoded_bits.csv', original_encoded_bits, delimiter=',', fmt='%d')
+print("**********************")
+np.savetxt('tempMatrix.csv', tempMatrix, delimiter=',', fmt='%d')
 
 numeric_states = [0 if state == 'good' else 1 for state in allChannelStates]
 

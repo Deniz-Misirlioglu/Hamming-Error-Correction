@@ -1,16 +1,20 @@
+#Created by Deniz and Riley
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
 
 np.set_printoptions(threshold=sys.maxsize)
 
+#Randomly setting the bit for a 10000 1D Array
 bit_matrix = np.random.randint(0, 2, 10000)
 
+#The encoder matrix 4x7
 G = np.array([[1, 0, 0, 0, 1, 1, 1],
               [0, 1, 0, 0, 1, 1, 0],
               [0, 0, 1, 0, 1, 0, 1],
               [0, 0, 0, 1, 0, 1, 1]])
 
+#The decoder matrix 7x3
 D = np.array([[1,1,1],
               [1,1,0],
               [1,0,1],
@@ -19,14 +23,17 @@ D = np.array([[1,1,1],
               [0,1,0],
               [0,0,1]])
 
+#Encoding the four bits, and returning 7 [X,X,X,X] -> [X,X,X,X,X,X,X]
 def encodeFourBits(four_bits):
     four_bits = four_bits.reshape(1, -1)
     return np.dot(four_bits, G) % 2
 
+#Decoing the seven bits, and recieving the error code [X,X,X,X,X,X,X] -> [X,X,X]
 def decodeSevenBits(seven_bits):
     seven_bits = seven_bits.reshape(1, -1)
     return np.dot(seven_bits, D) % 2
 
+#Finding the index of the bit which needs correcting based off the of the D matrix, -1 otherwise
 def correctionMethod(bit_error_position):
     for index, row in enumerate(D):
         comparison = row == bit_error_position
@@ -35,7 +42,7 @@ def correctionMethod(bit_error_position):
             return index
     return -1 
 
-
+#Performing the error operation in the matrix by a given prob P, and matrix
 def errorCalculation(p, matrix):
     errorCount = 0;
     for seven_bits in matrix:
@@ -49,16 +56,18 @@ def errorCalculation(p, matrix):
                     seven_bits[i] = 1
     return matrix
 
-
+#Comparing matrix A to B
 def compareMatrix(A,B):
     error_count = np.sum(A != B) 
     
     return error_count
 
-##############################################################################
 
+#__main_()-----------------------------------------------------------------------------
+
+#Empty arrays for the encoded bits
 encoded_bits = []
-original_encoded_bits = [];
+original_encoded_bits = []
 
 
 #Encoding the bits and setting encoded_bits to a 7,2500 matrix of bits
@@ -67,10 +76,14 @@ for i in range(0, len(bit_matrix), 4):
     encoded_bits.extend(encodeFourBits(four_bits))
     original_encoded_bits = np.copy(encoded_bits)
 
+#Probabilities P for the given matricies
 p = [0.01, 0.05, 0.1, 0.2, .3, .5]
+
 error_rates_before_correction = []
 error_rates_after_correction = []
 
+
+#Calculating the bit errors and their position in given [X,X,X] and swapping the error
 for i in p:
     tempMatrix = np.copy(encoded_bits)
     errorMatrix = errorCalculation(i, tempMatrix)
@@ -80,10 +93,13 @@ for i in p:
     print("Error before correction for p =", i, ":", round(error_before_correction, 5))
 
     decoded_bits = [] 
+
     for seven_bits in errorMatrix:
+        #Decoding the given [X,X,X,X,X,X,X] -> [X,X,X]
         decodePostion = decodeSevenBits(seven_bits)
         bit_corrected = correctionMethod(decodePostion)
         
+        #Swapping here if index is >= 0
         if bit_corrected >= 0:
             if seven_bits[bit_corrected] == 0:
                 seven_bits[bit_corrected] = 1

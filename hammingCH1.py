@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 np.set_printoptions(threshold=sys.maxsize)
 
 #Randomly setting the bit for a 10000 1D Array
+numOfBits = 100000
 bit_matrix = np.random.randint(0, 2, 10000)
 
 #The encoder matrix 4x7
@@ -116,7 +117,7 @@ plt.plot(p, error_rates_before_correction, marker='o', label='Error Before Corre
 plt.plot(p, error_rates_after_correction, marker='x', label='Error After Correction')
 plt.xlabel('Error Probability (p)')
 plt.ylabel('Error Rate')
-plt.title('Error Rates Before and After Correction')
+plt.title('Error Rates Before and After Correction for ' + numOfBits.__str__() + " bits")
 plt.legend()
 plt.grid(True)
 plt.show()

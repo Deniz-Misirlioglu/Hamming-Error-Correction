@@ -175,7 +175,7 @@ plt.show()
 
 #Second plot showing the number of errors before and after correction
 plt.figure(figsize=(8, 6))
-plt.bar(["Errors Before Corrections", "Errors After Correction"], [numOfError, error_after_correction], color=['red', 'black'])
+plt.bar(["Errors Before Corrections " + numOfError.__str__(), "Errors After Correction " + error_after_correction.__str__()], [numOfError, error_after_correction], color=['red', 'black'])
 plt.xlabel('Metrics')
 plt.ylabel('Errors')
 plt.title('Comparison of Error After Correction and Number of Errors')

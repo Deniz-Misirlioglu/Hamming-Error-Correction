@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 np.set_printoptions(threshold=sys.maxsize)
 
 #Randomly setting the bit for a 10000 1D Array
-bit_matrix = np.random.randint(0, 2, 10000)
+bit_matrix = np.random.randint(0, 2, 50000)
 
 allChannelStates = []
 inStateGood = bool(True);

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 np.set_printoptions(threshold=sys.maxsize)
 
 #Randomly setting the bit for a 10000 1D Array
-numOfBits = 10000
+numOfBits = 50000
 bit_matrix = np.random.randint(0, 2, numOfBits)
 
 #The encoder matrix 4x7
